@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record id="res_partner_draxton" model="res.partner">
+        <field name="name">Draxton</field>
+    </record>
+    <record id="product_product_draxton" model="product.product">
+        <field name="name">Test Draxton Product</field>
+    </record>
+    <record id="sale_order_draxton" model="base.import.pdf.template">
+        <field name="name">Pedidos de venta Draxton</field>
+        <field name="model_id" ref="sale.model_sale_order" />
+        <field name="child_field_id" ref="sale.field_sale_order__order_line" />
+        <!-- <field name="auto_detect_pattern">(?<=DRAXTON BARCELONA)[\S\s]*</field> -->
+        <field name="header_items">Producto,Cantidad</field>
+    </record>
+    <!-- header Lines -->
+    <record
+        id="sale_order_draxton_line_partner_id"
+        model="base.import.pdf.template.line"
+    >
+        <field name="template_id" ref="sale_order_draxton" />
+        <field name="related_model">header</field>
+        <field name="field_id" ref="sale.field_sale_order__partner_id" />
+        <field name="value_type">fixed</field>
+        <field name="fixed_value" ref="res_partner_draxton" />
+    </record>
+    <record
+        id="sale_order_draxton_line_client_order_ref"
+        model="base.import.pdf.template.line"
+    >
+        <field name="template_id" ref="sale_order_draxton" />
+        <field name="related_model">header</field>
+        <field name="field_id" ref="sale.field_sale_order__client_order_ref" />
+        <field name="pattern">(PCB[0-9][0-9]-.*)Nuestro CIF*</field>
+        <field name="value_type">variable</field>
+    </record>
+    <!-- Lines Lines -->
+    <record
+        id="sale_order_draxton_line_product_id"
+        model="base.import.pdf.template.line"
+    >
+        <field name="template_id" ref="sale_order_draxton" />
+        <field name="related_model">lines</field>
+        <field name="field_id" ref="sale.field_sale_order_line__product_id" />
+        <field name="column">0</field>
+        <field name="pattern">[0-9]{4} ([0-9]{9})</field>
+        <field name="value_type">variable</field>
+        <field
+            name="search_field_id"
+            ref="product_supplierinfo_for_customer.field_product_product__variant_customer_ids"
+        />
+        <field
+            name="search_subfield_id"
+            ref="product_supplierinfo_for_customer.field_product_customerinfo__product_code"
+        />
+        <!-- <field name="default_value">product.product,cls.env.ref('sale_import_pdf_simple.product_product_draxton').id</field>     -->
+    </record>
+    <record
+        id="sale_order_draxton_line_product_uom_qty"
+        model="base.import.pdf.template.line"
+    >
+        <field name="template_id" ref="sale_order_draxton" />
+        <field name="related_model">lines</field>
+        <field name="field_id" ref="sale.field_sale_order_line__product_uom_qty" />
+        <field name="column">1</field>
+        <field name="pattern">([0-9]{1,3}\D00)</field>
+        <field name="value_type">variable</field>
+    </record>
+</odoo>

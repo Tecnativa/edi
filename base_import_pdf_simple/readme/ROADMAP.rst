@@ -1,0 +1,3 @@
+- Add documentation.
+- Allow adding more than one file in the wizard.
+- Separar el módulo a base_import_pdf_simple_pdftotext para dejar en ese otro módulo la otra liberaría.

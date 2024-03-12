@@ -1,4 +1,6 @@
 # generated from manifests external_dependencies
 factur-x
+pdftotext
+pypdf
 PyPDF2
 PyYAML

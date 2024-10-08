@@ -240,6 +240,7 @@ class BaseImportPdfTemplateLine(models.Model):
             ("*m/*d/*Y", _("MM/dd/YY")),
             ("*d.*m.*Y", _("dd.MM.YY")),
             ("*d/*m/*Y", _("dd/MM/YY")),
+            ("*d/*m/*y-short", _("dd/MM/yy")),
         ],
     )
     time_format = fields.Selection(
@@ -323,7 +324,9 @@ class BaseImportPdfTemplateLine(models.Model):
     def _process_datetime_value(self, value):
         if self.field_ttype not in ("date", "datetime") or not self.date_format:
             return value
-        date_format = self.date_format.replace("*", "%")
+        # We need to replace -short because it is not respected in databases with
+        # different capitalization. (example: *d/*m/*Y and *d/*m/*y)
+        date_format = self.date_format.replace("*", "%").replace("-short", "")
         if self.field_ttype == "datetime":
             time_format = self.time_format.replace("*", "%")
             date_format += " " + time_format

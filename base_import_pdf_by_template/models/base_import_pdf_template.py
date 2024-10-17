@@ -241,6 +241,7 @@ class BaseImportPdfTemplateLine(models.Model):
             ("*d.*m.*Y", _("dd.MM.YY")),
             ("*d/*m/*Y", _("dd/MM/YY")),
             ("*d/*m/*y-short", _("dd/MM/yy")),
+            ("*B *d, *Y", _("B d, YY")),
         ],
     )
     time_format = fields.Selection(

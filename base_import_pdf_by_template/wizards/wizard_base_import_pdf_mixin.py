@@ -4,6 +4,7 @@ import base64
 import logging
 from tempfile import NamedTemporaryFile
 
+import pdfplumber
 import pypdf
 
 from odoo import _, fields, models
@@ -29,6 +30,18 @@ class WizardBaseImportPdfMixin(models.AbstractModel):
             logger.info("Text extraction made with pypdf")
         except Exception as e:
             logger.warning("Text extraction with pypdf failed. Error: %s", e)
+        return res
+
+    def _pdf_text_extraction_pdfplumber(self, fileobj):
+        res = False
+        try:
+            res = []
+            pdf = pdfplumber.open(fileobj.name)
+            for pdf_page in pdf.pages:
+                res.append(pdf_page.extract_text())
+            logger.info("Text extraction made with pdfplumber")
+        except Exception as e:
+            logger.warning("Text extraction with pdfplumber failed. Error: %s", e)
         return res
 
     def simple_pdf_text_extraction(self, file_data):

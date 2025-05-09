@@ -16,7 +16,7 @@ class WizardBaseImportPdfPreview(models.TransientModel):
         comodel_name="base.import.pdf.template", readonly=True
     )
     extraction_mode = fields.Selection(
-        selection=[("pypdf", "Pypdf")],
+        selection=[("pypdf", "Pypdf"), ("pdfplumber", "pdfplumber")],
         default="pypdf",
         string="Extraction mode",
     )

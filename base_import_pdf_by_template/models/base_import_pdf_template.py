@@ -14,7 +14,7 @@ class BaseImportPdfTemplate(models.Model):
     active = fields.Boolean(default=True)
     name = fields.Char(required=True)
     extraction_mode = fields.Selection(
-        selection=[("pypdf", "Pypdf")],
+        selection=[("pypdf", "Pypdf"), ("pdfplumber", "pdfplumber")],
         default="pypdf",
         string="Extraction mode",
     )
